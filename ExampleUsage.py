@@ -1,38 +1,38 @@
-from LMIO.wrapper import LMIO
-import matplotlib.pyplot as plt
+from LMIO.wrapper import *
 
-testLMIO = LMIO('swcFiles/HB060602_3ptSoma.swc')
 
-# #*********************************************************************************************************************
-# # Usage Example LMIO.getMeasureDistribution
-# #*********************************************************************************************************************
-# LMOutput = testLMIO.getMeasureDistribution('Diameter', nBins=50)
-# plt.figure()
-#
-#
-# print LMOutput['measure1BinCentres']
-# print LMOutput['measure1BinCounts']
-# plt.bar(LMOutput['measure1BinCentres'], LMOutput['measure1BinCounts'])
-# plt.draw()
-# plt.show(block=True)
-#
-# #*********************************************************************************************************************
+swcFiles = ['swcFiles/HB060602_3ptSoma.swc']
+
+##*********************************************************************************************************************
+## Usage Example getMeasureDistribution
+##*********************************************************************************************************************
+#LMOutput = getMeasureDistribution(['Diameter'], swcFiles, nBins=50)
+#plt.figure()
+
+
+#print LMOutput[0]['measure1BinCentres']
+#print LMOutput[0]['measure1BinCounts']
+#plt.bar(LMOutput[0]['measure1BinCentres'], LMOutput[0]['measure1BinCounts'])
+#plt.draw()
+#plt.show(block=False)
+
+##*********************************************************************************************************************
+
+##*********************************************************************************************************************
+## # Usage Example getMeasure
+##*********************************************************************************************************************
+LMOutput = getMeasure(['Surface'], swcFiles)
+print 'Neuron Surface Area is ' + str(LMOutput[0, 0, 0])
+
+##*********************************************************************************************************************
 
 #*********************************************************************************************************************
-# # Usage Example LMIO.getMeasure
+# Usage Example getMeasureDependence
 #*********************************************************************************************************************
-LMOutput = testLMIO.getMeasure('Branch_Order')
-print 'Neuron Surface is ' + str(LMOutput['Average'])
+#LMOutput = getMeasureDependence(['Branch_Order'], ['EucDistance'], swcFiles , nBins=50)
+#plt.figure()
+#plt.plot(LMOutput[0]['measure1BinCentres'], LMOutput[0]['measure2BinAverages'], 'ro', mfc = 'r', ms=5)
+#plt.draw()
+#plt.show(block=False)
 
 #*********************************************************************************************************************
-
-# #*********************************************************************************************************************
-# # Usage Example LMIO.getMeasureDependence
-# #*********************************************************************************************************************
-# LMOutput = testLMIO.getMeasureDependence('Bif_ampl_local', 'EucDistance', nBins=50)
-# plt.figure()
-# plt.bar(LMOutput['measure1BinCentres'], LMOutput['measure2BinAverages'])
-# plt.draw()
-# plt.show(block=True)
-#
-# #*********************************************************************************************************************
