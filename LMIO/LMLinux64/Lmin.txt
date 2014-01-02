@@ -1,3 +1,4 @@
- -f9,f15,1,0,10.0  
--s/home/ajay/Downloads/Lm/diamVCEucDistA.out 
-/home/ajay/Dropbox/GinjangSim/swcFiles/HB060602_3ptSoma.swc
+ -f5,0,0,10.0 -f6,0,0,10.0 -f7,0,0,10.0 -f12,0,0,10.0 -f27,f27,0,0,10.0  
+-s/home/ajay/repos/LMWrapper/LMIO/LMLinux64/Lmout.txt 
+/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D00V00C00S00_3ptSoma.swc
+/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D01V01C00S00_3ptSoma.swc

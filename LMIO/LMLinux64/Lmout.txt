@@ -1,0 +1,13 @@
+/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D00V00C00S00_3ptSoma.swc	Width 	212.4	9622	(0)	212.4	212.4	212.4	0 
+/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D00V00C00S00_3ptSoma.swc	Height 	148.989	9622	(0)	148.989	148.989	148.989	0 
+/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D00V00C00S00_3ptSoma.swc	Depth 	148	9622	(0)	148	148	148	0 
+/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D00V00C00S00_3ptSoma.swc	Surface 	41398.9	9621	(1)	0.0100603	4.30297	139.287	7.20488 
+/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D00V00C00S00_3ptSoma.swc	Parent_Daughter_Ratio Distribution:Parent_Daughter_Ratio	0.575635	1.72691	2.87818	4.02945	5.18072	6.33199	7.48326	8.63453	9.7858	10.9371	12.0883	
+	Parent_Daughter_Ratio	2595 	2651 	9 	8 	6 	0 	0 	1 	1 	1 	1 	
+/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D01V01C00S00_3ptSoma.swc	Width 	212.012	9885	(0)	212.012	212.012	212.012	0 
+/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D01V01C00S00_3ptSoma.swc	Height 	149.832	9885	(0)	149.832	149.832	149.832	0 
+/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D01V01C00S00_3ptSoma.swc	Depth 	148	9885	(0)	148	148	148	0 
+/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D01V01C00S00_3ptSoma.swc	Surface 	41909.6	9884	(1)	0.0100603	4.24015	139.287	7.12173 
+/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D01V01C00S00_3ptSoma.swc	Parent_Daughter_Ratio Distribution:Parent_Daughter_Ratio	0.575635	1.72691	2.87818	4.02945	5.18072	6.33199	7.48326	8.63453	9.7858	10.9371	12.0883	
+	Parent_Daughter_Ratio	2640 	2694 	9 	8 	6 	0 	0 	1 	1 	1 	1 	
+ 

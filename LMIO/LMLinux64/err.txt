@@ -1,0 +1,33 @@
+LMeasure v$REVISION: 434 Release Lmv5.0
+argc:9Neuron#:1 /home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D00V00C00S00_3ptSoma.swc
+Single Neuron://home//ajay//PowerFolders//GinJangNDB_Upload//SigenSegmentations//HB130313-4//swc//D00V00C00S00_3ptSoma.swc
+Neuron#:2 /home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D01V01C00S00_3ptSoma.swc
+Single Neuron://home//ajay//PowerFolders//GinJangNDB_Upload//SigenSegmentations//HB130313-4//swc//D01V01C00S00_3ptSoma.swc
+Current local time and date:Tue Dec 17 19:11:49 2013
+creating neuron:/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D00V00C00S00_3ptSoma.swc
+c............... :1  String........: 1
+c............... :2  String........: 2
+c............... :1  String........: 1
+returning..0adding type 1adding type 1addNewChild:42.84,173.88,251+
+42.6,173.7,251
+init 
+Found Duplicate type:1 X:42.84 173.88 251 virtual segment-> skipped!
+Neuron() done 
+current id is 1 and next2() is traversed1,42.84,173.88,251:212.4
+current id is 1 and next2() is traversed1,42.84,173.88,251:148.989
+current id is 1 and next2() is traversed1,42.84,173.88,251:148
+removed all 9623 segsCurrent local time and date:Tue Dec 17 19:11:49 2013
+creating neuron:/home/ajay/PowerFolders/GinJangNDB_Upload/SigenSegmentations/HB130313-4/swc/D01V01C00S00_3ptSoma.swc
+c............... :1  String........: 1
+c............... :2  String........: 2
+c............... :1  String........: 1
+returning..0adding type 1adding type 1addNewChild:43.2,170.82,268+
+43.335,170.505,267
+init 
+Found Duplicate type:1 X:43.2 170.82 268 virtual segment-> skipped!
+Neuron() done 
+current id is 1 and next2() is traversed1,43.2,170.82,268:212.012
+current id is 1 and next2() is traversed1,43.2,170.82,268:149.832
+current id is 1 and next2() is traversed1,43.2,170.82,268:148
+removed all 9886 segsCurrent local time and date:Tue Dec 17 19:11:49 2013
+ 
