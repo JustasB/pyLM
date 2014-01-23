@@ -72,7 +72,8 @@ class LMIO:
                     measure1BinCounts=None,
                     measure2BinAverages=None,
                     measure2BinStdDevs=None,
-                    WholeCellMeasures=None,
+                    measure2BinSums=None,
+                    WholeCellMeasures=None
                     )
 
 
@@ -124,23 +125,19 @@ class LMIO:
 
     #*******************************************************************************************************************
 
-    def composeInputString(self, measure1Name, nBins, measure2Name):
+    def composeInputString(self, measure1Name, nBins, measure2Name, average):
         if measure2Name is None:
             return '-f' + str(self.functionRef[measure1Name]) + ',0,0,' + str(nBins)
         else:
             measure2 = self.functionRef[measure2Name]
-            if measure1Name == measure2Name:
-                aver = 0
-            else:
-                aver = 1
 
-            return '-f' + str(self.functionRef[measure1Name]) + ',f' + str(measure2) + ',' + str(aver) + ',0,' \
+            return '-f' + str(self.functionRef[measure1Name]) + ',f' + str(measure2) + ',' + str(int(average)) + ',0,' \
                                                                                                     + str(nBins)
 
 
     #*******************************************************************************************************************
 
-    def writeLMIn(self, measure1Names, measure2Names, swcFileNames, nBins, rawData=False):
+    def writeLMIn(self, measure1Names, measure2Names, swcFileNames, nBins, average=False, rawData=False):
         """
         Write the input file for L-measure.
 
@@ -158,7 +155,7 @@ class LMIO:
         # if rawData:
         #     outputLine += '-R'
 
-        inputLine = strJoin([self.composeInputString(measure1Name, nBins, measure2Name) \
+        inputLine = strJoin([self.composeInputString(measure1Name, nBins, measure2Name, average) \
                              for measure1Name,measure2Name in zip(measure1Names, measure2Names)], ' ')
 
         LMIn.write(inputLine + '\n')
@@ -253,7 +250,7 @@ class LMIO:
 
             return toReturn
 
-        elif outputFormat == 'getDependence':
+        elif outputFormat == 'getDependenceYesAverage':
 
             toReturn = []
 
@@ -274,8 +271,24 @@ class LMIO:
 
             return toReturn
 
-    #*******************************************************************************************************************
+        elif outputFormat == 'getDependenceNoAverage':
 
+            toReturn = []
+
+            tempStr = LMOutputFile.readline()
+            tempWords = tempStr.split('\t')
+            tempWords = tempWords[2:len(tempWords) - 1]
+            toReturn.append(np.asarray([self.str2floatTrap(x) for x in tempWords]))
+
+            tempStr = LMOutputFile.readline()
+            tempWords = tempStr.split('\t')
+            tempWords = tempWords[2:len(tempWords) - 1]
+            toReturn.append(np.asarray([self.str2floatTrap(x) for x in tempWords]))
+
+            return toReturn
+
+
+    #*******************************************************************************************************************
     def readOutput(self, numberOfMeasures, numberOfSWCFiles, outputFormat, nBins, rawData=False):
         """
         Reads output from the L-measure output file according to the format specified in 'outputFormat' and fills in the structure LMOutput
@@ -289,12 +302,15 @@ class LMIO:
             if outputFormat == 'getMeasure':
                 LMOutputTempCopy['WholeCellMeasures'] = np.zeros([numberOfSWCFiles, 7])
             if outputFormat == 'getDistribution':
-                LMOutputTempCopy['measure1BinCentres'] = np.zeros([numberOfSWCFiles, nBins + 1])
-                LMOutputTempCopy['measure1BinCounts'] = np.zeros([numberOfSWCFiles, nBins + 1])
-            if outputFormat ==  'getDependence':
-                LMOutputTempCopy['measure1BinCentres'] = np.zeros([numberOfSWCFiles, nBins + 1])
-                LMOutputTempCopy['measure2BinAverages'] = np.zeros([numberOfSWCFiles, nBins + 1])
-                LMOutputTempCopy['measure2BinStdDevs'] = np.zeros([numberOfSWCFiles, nBins + 1])
+                LMOutputTempCopy['measure1BinCentres'] = np.zeros([numberOfSWCFiles, nBins])
+                LMOutputTempCopy['measure1BinCounts'] = np.zeros([numberOfSWCFiles, nBins])
+            if outputFormat ==  'getDependenceYesAverage':
+                LMOutputTempCopy['measure1BinCentres'] = np.zeros([numberOfSWCFiles, nBins])
+                LMOutputTempCopy['measure2BinAverages'] = np.zeros([numberOfSWCFiles, nBins])
+                LMOutputTempCopy['measure2BinStdDevs'] = np.zeros([numberOfSWCFiles, nBins])
+            if outputFormat ==  'getDependenceNoAverage':
+                LMOutputTempCopy['measure1BinCentres'] = np.zeros([numberOfSWCFiles, nBins])
+                LMOutputTempCopy['measure2BinSums'] = np.zeros([numberOfSWCFiles, nBins])
 
             LMOutput.append(LMOutputTempCopy)
 
@@ -307,14 +323,19 @@ class LMIO:
                                                                                                       outputFormat)
                 if outputFormat == 'getDistribution':
                     returned = self.readOneLineOutput(LMOutputFile, outputFormat)
-                    LMOutput[measureInd]['measure1BinCentres'][swcFileInd, :] = returned[0]
-                    LMOutput[measureInd]['measure1BinCounts'][swcFileInd, :] = returned[1]
+                    LMOutput[measureInd]['measure1BinCentres'][swcFileInd, :] = returned[0][:nBins]
+                    LMOutput[measureInd]['measure1BinCounts'][swcFileInd, :] = returned[1][:nBins]
 
-                if outputFormat == 'getDependence':
+                if outputFormat == 'getDependenceYesAverage':
                     returned = self.readOneLineOutput(LMOutputFile, outputFormat)
-                    LMOutput[measureInd]['measure1BinCentres'][swcFileInd, :] = returned[0]
-                    LMOutput[measureInd]['measure2BinAverages'][swcFileInd, :] = returned[1]
-                    LMOutput[measureInd]['measure2BinStdDevs'][swcFileInd, :] = returned[2]
+                    LMOutput[measureInd]['measure1BinCentres'][swcFileInd, :] = returned[0][:nBins]
+                    LMOutput[measureInd]['measure2BinAverages'][swcFileInd, :] = returned[1][:nBins]
+                    LMOutput[measureInd]['measure2BinStdDevs'][swcFileInd, :] = returned[2][:nBins]
+
+                if outputFormat == 'getDependenceNoAverage':
+                    returned = self.readOneLineOutput(LMOutputFile, outputFormat)
+                    LMOutput[measureInd]['measure1BinCentres'][swcFileInd, :] = returned[0][:nBins]
+                    LMOutput[measureInd]['measure2BinSums'][swcFileInd, :] = returned[1][:nBins]
 
         LMOutputFile.close()
         return LMOutput
@@ -329,7 +350,7 @@ class LMIO:
         :param measureNames: A list of string containing the measures required. Look at the different functions available in L-measure in 'help/index.html'. Examples: 'Diameter', 'N_tips'
         :param swcFileNames: A list of swc file paths. All the measures in measureNames are applied on all files.
         :param Filter: Not implemented
-        :return:
+        :return: list of filled LMOutput_Template copies, one copy per measure specified.
         """
 
         for measure in measureNames:
@@ -351,7 +372,7 @@ class LMIO:
         :param swcFileNames: A list of swc file paths. All the measures in measureNames are applied on all files.
         :param nBins: number of bins for the distribution
         :param Filter: Not implemented
-        :return:
+        :return: list of filled LMOutput_Template copies, one copy per measure specified.
         """
         for measure in measureNames:
             assert not measure == 'XYZ', 'Measure \'XYZ\' cannot be used with getMeasureDistribution()'
@@ -365,7 +386,7 @@ class LMIO:
 
     #*******************************************************************************************************************
 
-    def getMeasureDependence(self, measure1Names, measure2Names, swcFileNames, nBins=10, Filter=False):
+    def getMeasureDependence(self, measure1Names, measure2Names, swcFileNames, nBins=10, average=True, Filter=False):
         """
         Runs L-measure on the SWC file in the initialized path to calculate the averages and standard deviations of measure2 for different bins along the values of measure1.
         The fields 'measure1BinCentres', 'measure2BinAverages' and 'measure2BinStdDevs' of the LMOutput dictionary are filled in. The values of the remaining fields of the dictionary are not valid.
@@ -374,7 +395,7 @@ class LMIO:
         :param measure2Names: A list of strings containing the independent Measures required. Look at the different functions available in L-measure in 'help/index.html'. Examples: 'Diameter', 'N_tips'
         :param nBins: number of bins for the distribution of measure1
         :param Filter: Not Implemented
-        :return:
+        :return: list of filled LMOutput_Template copies, one copy per measure specified.
         """
 
         for measure1 in measure1Names:
@@ -383,11 +404,14 @@ class LMIO:
             assert not measure2 == 'XYZ', 'Measure \'XYZ\' cannot be used with getMeasureDependence()'
 
 
-        self.writeLMIn(measure1Names, measure2Names, swcFileNames, nBins)
+        self.writeLMIn(measure1Names, measure2Names, swcFileNames, nBins, average)
 
         self.runLM()
 
-        return self.readOutput(len(measure1Names), len(swcFileNames), 'getDependence', nBins)
+        if average:
+            return self.readOutput(len(measure1Names), len(swcFileNames), 'getDependenceYesAverage', nBins)
+        else:
+            return self.readOutput(len(measure1Names), len(swcFileNames), 'getDependenceNoAverage', nBins)
 
     #*******************************************************************************************************************
 #***********************************************************************************************************************
