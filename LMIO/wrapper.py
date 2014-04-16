@@ -1,12 +1,10 @@
 import os
 import subprocess
 import platform
-import pkgutil
 from string import join as strJoin
 import numpy as np
 
 #TODO add raw_data=True flag to functions
-
 
 
 class LMIO:
@@ -81,7 +79,7 @@ class LMIO:
     LMOutputFName = 'tmp/LMOutput.txt'
     LMLogFName = 'tmp/LMLog.txt'
 
-    packagePrefix = pkgutil.get_loader("LMIO").filename
+    packagePrefix = os.path.split(__file__)[0]
 
     #*******************************************************************************************************************
 
@@ -304,7 +302,7 @@ class LMIO:
             if outputFormat == 'getDistribution':
                 LMOutputTempCopy['measure1BinCentres'] = np.zeros([numberOfSWCFiles, nBins])
                 LMOutputTempCopy['measure1BinCounts'] = np.zeros([numberOfSWCFiles, nBins])
-            if outputFormat ==  'getDependenceYesAverage':
+            if outputFormat == 'getDependenceYesAverage':
                 LMOutputTempCopy['measure1BinCentres'] = np.zeros([numberOfSWCFiles, nBins])
                 LMOutputTempCopy['measure2BinAverages'] = np.zeros([numberOfSWCFiles, nBins])
                 LMOutputTempCopy['measure2BinStdDevs'] = np.zeros([numberOfSWCFiles, nBins])

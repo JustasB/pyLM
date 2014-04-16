@@ -1,0 +1,3 @@
+-f9,f15,1,0,100
+-stmp/LMOutput.txt
+testFiles/HB130605-1NS.swc

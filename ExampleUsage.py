@@ -1,7 +1,7 @@
 from LMIO.wrapper import *
 import matplotlib.pyplot as plt
 
-swcFiles = ['swcFiles/HB060602_3ptSoma.swc']
+swcFiles = ['test/testFiles/HB130605-1NS.swc']
 
 ##*********************************************************************************************************************
 ## Usage Example getMeasureDistribution
