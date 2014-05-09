@@ -1,4 +1,4 @@
-from LMIO.wrapper_v2 import *
+from LMIO.wrapper import *
 import os
 from filecmp import cmp
 

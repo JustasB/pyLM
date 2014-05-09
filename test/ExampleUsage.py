@@ -1,20 +1,22 @@
-from LMIO.wrapper_v2 import *
+from LMIO.wrapper import *
 import matplotlib.pyplot as plt
+from easygui import fileopenbox
 
-swcFiles = ['testFiles/HB130605-1NS.swc']
+swcFile = fileopenbox(msg='SWC file with three point soma', filetypes=['*.swc'])
+swcFiles = [swcFile]
 
 ##*********************************************************************************************************************
 ## Usage Example getMeasureDistribution
 ##*********************************************************************************************************************
-# LMOutput = getMeasureDistribution(['Diameter'], swcFiles, nBins=50)
-# plt.figure()
-#
-#
-# print LMOutput[0]['measure1BinCentres']
-# print LMOutput[0]['measure1BinCounts']
-# plt.bar(LMOutput[0]['measure1BinCentres'][0], LMOutput[0]['measure1BinCounts'][0])
-# plt.draw()
-# plt.show(block=False)
+LMOutput = getMeasureDistribution(['Pk_classic'], swcFiles, nBins=50)
+plt.figure()
+
+
+print LMOutput[0]['measure1BinCentres']
+print LMOutput[0]['measure1BinCounts']
+plt.bar(LMOutput[0]['measure1BinCentres'][0], LMOutput[0]['measure1BinCounts'][0])
+plt.draw()
+plt.show(block=False)
 
 ##*********************************************************************************************************************
 
@@ -40,13 +42,13 @@ swcFiles = ['testFiles/HB130605-1NS.swc']
 #*********************************************************************************************************************
 # Usage Example getMeasureDependence with averaging
 #*********************************************************************************************************************
-LMOutput = getMeasureDependence(['Diameter'], ['EucDistance'], swcFiles, nBins=100, average=True)
-plt.figure()
-plt.errorbar(LMOutput[0]['measure1BinCentres'][0],
-             LMOutput[0]['measure2BinAverages'][0],
-             LMOutput[0]['measure2BinStdDevs'][0],
-                color='r', ls='-', marker='o', ms=5, mfc='r')
-plt.draw()
-plt.show(block=False)
+# LMOutput = getMeasureDependence(['Diameter'], ['EucDistance'], swcFiles, nBins=100, average=True)
+# plt.figure()
+# plt.errorbar(LMOutput[0]['measure1BinCentres'][0],
+#              LMOutput[0]['measure2BinAverages'][0],
+#              LMOutput[0]['measure2BinStdDevs'][0],
+#                 color='r', ls='-', marker='o', ms=5, mfc='r')
+# plt.draw()
+# plt.show(block=False)
 
 #*********************************************************************************************************************
