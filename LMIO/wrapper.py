@@ -108,12 +108,12 @@ class LMInput:
         for measureInd, measure1Name in enumerate(self.measure1names):
 
             if self.measure2names is None:
-                functionString += '-f' + str(self.functionRef[measure1Name]) + ',0,0,' + str(self.nBins)
+                functionString += '-f' + str(self.functionRef[measure1Name]) + ',0,0,' + str(self.nBins) + ' '
             else:
                 measure2 = self.functionRef[self.measure2names[measureInd]]
 
                 functionString += '-f' + str(self.functionRef[measure1Name]) + ',f' + str(measure2) + ',' \
-                                      + str(int(self.average)) + ',0,' + str(self.nBins)
+                                      + str(int(self.average)) + ',0,' + str(self.nBins) + ' '
 
         return functionString
 
