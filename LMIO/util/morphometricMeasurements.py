@@ -6,21 +6,21 @@
 #The following code has been tested with the indicated versions on 64bit Linux and PYTHON 2.7.3
 
 #os: Use standard library with comes with python.
-#json : 2.0.9
+#pint: 0.5.1
 
 #***********************************************************************************************************************
 
 
 from ..wrapper import *
 import os
-import json
+from pint import UnitRegistry
+ureg = UnitRegistry()
 
-
-def morphMeasuresJSON(swcfName):
+def getMorphMeasures(swcfName):
     """
 
     :param swcfName: relative/absolute path of the swc file.
-    :return: a json string containing a dictionary of scalar measurements as key value pairs. The name of the key is the name of the measurement.
+    :return: a dictionary of scalar measurements as key value pairs. The name of the key is the name of the measurement. The values are pint quantities.
     """
 
     swcfName = os.path.abspath(swcfName)
@@ -38,17 +38,17 @@ def morphMeasuresJSON(swcfName):
 
 
     scalarDict = dict(
-                    Width=width,
-                    Height=height,
-                    Depth=depth,
-                    Length=length,
-                    Volume=volume,
-                    Surface=surface,
-                    NumberofBifurcations=nbifs,
+                    Width=width * ureg.um,
+                    Height=height * ureg.um,
+                    Depth=depth * ureg.um,
+                    Length=length * ureg.um,
+                    Volume=volume * (ureg.um) ** 3,
+                    Surface=surface * (ureg.um) ** 2,
+                    NumberofBifurcations=ureg.Quantity(nbifs, None) ,
                     )
 
-    jsonDict = dict(scalarMeasurements=scalarDict)
-    jsonStr = json.dumps(jsonDict)
+    retDict = dict(scalarMeasurements=scalarDict)
 
-    return jsonStr
+
+    return retDict
     #*******************************************************************************************************************
