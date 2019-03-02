@@ -1,6 +1,23 @@
-Python Wrapper for L-measure.
+[![Build Status](https://travis-ci.com/JustasB/pylmeasure.svg?branch=master)](https://travis-ci.com/JustasB/pylmeasure)
+[![Coverage Status](https://coveralls.io/repos/github/JustasB/pylmeasure/badge.svg?branch=master)](https://coveralls.io/github/JustasB/pylmeasure?branch=master)
+[![PyPI version](https://badge.fury.io/py/pylmeasure.svg)](https://badge.fury.io/py/pylmeasure)
 
-It is advised that one be familiar with L-measure and it's functionalities before using this wrapper.
+# PyLMeasure: A Python Wrapper for L-Measure.
+
+[PyLMeasure](https://pypi.org/project/pylmeasure/) is a Python wrapper library for the command-line interface of the neuronal morphology analysis tool [L-Measure](http://cng.gmu.edu:8080/Lm/help/index.htm).
+
+# Installation
+
+To install the library, simply type in `pip install pylmeasure` in your terminal.
+
+There is no need to separately download L-Measure or install Java. The above command includes the necessary binaries.
+
+# Usage
+
+# Issues
+
+# Contributing
+
 
 Mainly, three functions are implemented getMeasure(), getMeasureDistribution() and
 getMeasureDependence().
