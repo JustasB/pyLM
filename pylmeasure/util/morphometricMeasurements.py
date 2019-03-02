@@ -11,7 +11,7 @@
 #***********************************************************************************************************************
 
 
-from ..wrapper import *
+from .. import *
 import os
 from pint import UnitRegistry
 ureg = UnitRegistry()

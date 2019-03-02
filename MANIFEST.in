@@ -1,0 +1,4 @@
+recursive-include pylmeasure/LMLinux32 *
+recursive-include pylmeasure/LMLinux64 *
+recursive-include pylmeasure/LMMac *
+recursive-include pylmeasure/LMWin *
