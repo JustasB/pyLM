@@ -2,6 +2,7 @@ import os
 import subprocess
 import platform
 import numpy as np
+import distutils.dir_util, os
 
 #***********************************************************************************************************************
 
@@ -133,6 +134,9 @@ class LMInput:
         """
 
         outputLine = '-s' + outputFileName
+
+        # Create parent folders if they don't exist
+        distutils.dir_util.mkpath(os.path.dirname(inputFName))
 
         with open(inputFName, 'w') as LMInputFile:
             LMInputFile.write(self.getFunctionString() + '\n')
