@@ -1,3 +1,0 @@
--f12,0,0,10
--stmp/LMOutput.txt
-testFiles/HB130605-1NS.swc
