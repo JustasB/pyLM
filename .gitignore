@@ -16,3 +16,5 @@ build/
 dist/
 
 pylmeasure\.egg-info/
+
+*.pyc
