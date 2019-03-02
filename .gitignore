@@ -18,3 +18,5 @@ dist/
 pylmeasure\.egg-info/
 
 *.pyc
+
+\.coverage

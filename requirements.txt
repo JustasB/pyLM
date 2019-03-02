@@ -1,2 +1,4 @@
 numpy
 Pint
+pytest-cov
+python-coveralls
