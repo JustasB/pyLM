@@ -30,11 +30,11 @@ print("Mean diameter in first file:", LMOutput[1]["WholeCellMeasuresDict"][0]["A
 For more examples, see [this Jupyter notebook](https://github.com/JustasB/pylmeasure/blob/master/PyLMeasure%20Usage.ipynb).
 
 # Issues
-If you encounter an issues, first make sure it's not due to L-Measure itself -- this library simply wraps the L-Measure executables. If it is, please contact the [L-Measure team](http://cng.gmu.edu:8080/Lm/). If the issue is with this library, please create an [issue on Github](https://github.com/JustasB/pylmeasure/issues).
+If you encounter an issue, first make sure it's not due to L-Measure itself -- this library simply wraps the L-Measure executables. If it is, please contact the [L-Measure team](http://cng.gmu.edu:8080/Lm/). If the issue is with this library, please create an [issue on Github](https://github.com/JustasB/pylmeasure/issues).
 
 # Contributing
 
-To contribute, please open an issue first and discuss your plan for contributing. Then fork this repository and commit a pull-request with your changes.
+To contribute, please [open an issue](https://github.com/JustasB/pylmeasure/issues) first and discuss your plan for contributing. Then fork this repository and commit [a pull-request](https://help.github.com/en/articles/about-pull-requests) with your changes.
 
 # Acknowledgements
 
