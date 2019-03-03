@@ -217,7 +217,18 @@ class BasicLMOutput:
                                      measure2BinAverages=None,
                                      measure2BinStdDevs=None,
                                      measure2BinSums=None,
-                                     WholeCellMeasures=None)
+                                     WholeCellMeasures=None,
+                                     WholeCellMeasuresDict=None)
+
+        self.WholeCellMeasuresDictTemplate = {
+            "TotalSum":None,
+            "CompartmentsConsidered":None,
+            "CompartmentsDiscarded":None,
+            "Minimum":None,
+            "Average":None,
+            "Maximum":None,
+            "StdDev":None
+        }
 
     def saveOneLine(self, measureInd, swcFileInd):
 
@@ -252,11 +263,28 @@ class getMeasureLMOutput(BasicLMOutput):
         for x in self.lmInput.measure1names:
             tempCopy = self.LMOutputTemplate.copy()
             tempCopy['WholeCellMeasures'] = np.zeros([self.lmInput.numberOfSWCFiles, 7])
+
+            # Pre-populate with blank copies of the output dictionary
+            tempCopy['WholeCellMeasuresDict'] = [self.WholeCellMeasuresDictTemplate.copy() for i in range(self.lmInput.numberOfSWCFiles)]
+
             self.LMOutput.append(tempCopy)
 
     def saveOneLine(self, measureInd, swcFileInd):
 
-        self.LMOutput[measureInd]['WholeCellMeasures'][swcFileInd, :] = self.readOneLine(2)
+        line = self.readOneLine(2)
+
+        self.LMOutput[measureInd]['WholeCellMeasures'][swcFileInd, :] = line
+
+        # Parse the values from the line into corresponding dict keys
+        swcDict = self.LMOutput[measureInd]['WholeCellMeasuresDict'][swcFileInd]
+
+        swcDict["TotalSum"] = line[0]
+        swcDict["CompartmentsConsidered"] = line[1]
+        swcDict["CompartmentsDiscarded"] = line[2]
+        swcDict["Minimum"] = line[3]
+        swcDict["Average"] = line[4]
+        swcDict["Maximum"] = line[5]
+        swcDict["StdDev"] = line[6]
 
 #***********************************************************************************************************************
 
