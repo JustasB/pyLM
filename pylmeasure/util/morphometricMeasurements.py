@@ -2,14 +2,6 @@
 #Date: 2 May 2014
 #Place: Dept. of Biology II, LMU, Munich
 
-#********************************************List of Dependencies*******************************************************
-#The following code has been tested with the indicated versions on 64bit Linux and PYTHON 2.7.3
-
-#os: Use standard library with comes with python.
-#pint: 0.5.1
-
-#***********************************************************************************************************************
-
 
 from .. import *
 import os
@@ -51,4 +43,3 @@ def getMorphMeasures(swcfName):
 
 
     return retDict
-    #*******************************************************************************************************************

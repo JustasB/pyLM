@@ -4,9 +4,6 @@ import platform
 import numpy as np
 import distutils.dir_util, os
 
-#***********************************************************************************************************************
-
-
 def str2floatTrap(someStr):
     """
     Checks if there is either a starting '('  or an ending ')' around the input string and returns a string without them.
@@ -24,7 +21,7 @@ def str2floatTrap(someStr):
 
     return float(tempStr)
 
-#***********************************************************************************************************************
+
 
 
 def removeFileIfExists(fName):
@@ -32,7 +29,7 @@ def removeFileIfExists(fName):
     if os.path.isfile(fName):
         os.remove(fName)
 
-#***********************************************************************************************************************
+
 
 
 class LMInput:
@@ -122,7 +119,7 @@ class LMInput:
 
         return functionString
 
-    #*******************************************************************************************************************
+    
 
     def writeLMIn(self, inputFName,  outputFileName):
         """
@@ -147,9 +144,9 @@ class LMInput:
 
             LMInputFile.flush()
 
-    #*******************************************************************************************************************
+    
 
-#***********************************************************************************************************************
+
 
 
 class LMRun():
@@ -176,7 +173,7 @@ class LMRun():
 
         self.packagePrefix = os.path.split(__file__)[0]
 
-    #*******************************************************************************************************************
+    
 
     def runLM(self, LMInputFName, LMOutputFName, LMLogFName):
         """
@@ -197,9 +194,9 @@ class LMRun():
             except:
                 raise(Exception('No Output file created by Lmeasure. Check ' + LMLogFName))
 
-    #*******************************************************************************************************************
+    
 
-#***********************************************************************************************************************
+
 
 
 class BasicLMOutput:
@@ -251,7 +248,7 @@ class BasicLMOutput:
         else:
             return np.asarray([str2floatTrap(x) for x in tempWords[start:end]])
 
-#***********************************************************************************************************************
+
 
 
 class getMeasureLMOutput(BasicLMOutput):
@@ -286,7 +283,7 @@ class getMeasureLMOutput(BasicLMOutput):
         swcDict["Maximum"] = line[5]
         swcDict["StdDev"] = line[6]
 
-#***********************************************************************************************************************
+
 
 
 class getMeasureDistLMOutput(BasicLMOutput):
@@ -306,7 +303,7 @@ class getMeasureDistLMOutput(BasicLMOutput):
         self.LMOutput[measureInd]['measure1BinCentres'][swcFileInd, :] = self.readOneLine(2, self.lmInput.nBins + 2)
         self.LMOutput[measureInd]['measure1BinCounts'][swcFileInd, :] = self.readOneLine(2, self.lmInput.nBins + 2)
 
-#***********************************************************************************************************************
+
 
 
 class getMeasureDepLMOutput(BasicLMOutput):
@@ -345,7 +342,7 @@ class getMeasureDepLMOutput(BasicLMOutput):
 
             self.LMOutput[measureInd]['measure2BinSums'][swcFileInd, :] = self.readOneLine(2, self.lmInput.nBins + 2)
 
-#***********************************************************************************************************************
+
 
 
 def LMIOFunction(mode, swcFileNames, measure1Names, measure2Names=None, average=False, nBins=10, Filter=False):
@@ -381,7 +378,7 @@ def LMIOFunction(mode, swcFileNames, measure1Names, measure2Names=None, average=
 
     return lmOutput.LMOutput
 
-#***********************************************************************************************************************
+
 
 def getMeasure(measureNames, swcFileNames):
     '''
@@ -412,18 +409,17 @@ def getOneMeasure(measure, swcFile):
 
     return result[0]["WholeCellMeasuresDict"][0]
 
-#***********************************************************************************************************************
+
 
 
 def getMeasureDistribution(measureNames, swcFileNames, nBins=10, Filter=False):
 
     return LMIOFunction('getDist', swcFileNames, measureNames, measureNames, nBins=nBins, Filter=Filter)
 
-#***********************************************************************************************************************
+
 
 
 def getMeasureDependence(measure1Names, measure2Names, swcFileNames, nBins=10, average=True, Filter=False):
 
     return LMIOFunction('getDep', swcFileNames, measure1Names, measure2Names, average, nBins, Filter=Filter)
 
-#***********************************************************************************************************************
