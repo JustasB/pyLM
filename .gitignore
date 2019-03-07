@@ -20,3 +20,5 @@ pylmeasure\.egg-info/
 *.pyc
 
 \.coverage
+
+\.ipynb_checkpoints/

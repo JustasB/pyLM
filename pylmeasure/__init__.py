@@ -171,7 +171,7 @@ class LMRun():
             self.LMExec = 'Lm.exe'
 
         else:
-            raise(NotImplementedError('Currently, this wrapper is supported only on Linux. \
+            raise(NotImplementedError('Currently, this wrapper only supports Linux, Mac, and Windows. \
             Sorry for the inconvenience.'))
 
         self.packagePrefix = os.path.split(__file__)[0]
@@ -383,10 +383,34 @@ def LMIOFunction(mode, swcFileNames, measure1Names, measure2Names=None, average=
 
 #***********************************************************************************************************************
 
+def getMeasure(measureNames, swcFileNames):
+    '''
+    Computes a list of measures of a list of SWC files.
 
-def getMeasure(measureNames, swcFileNames, Filter=False):
+    :param measureNames: A list of measures. See "Function list" in: http://cng.gmu.edu:8080/Lm/help/index.htm
+    :param swcFileNames: A list of paths to SWC files
+    :return: A list in the form of:
+                                                       V-- measure index           V-- file index
+        print("Surface area of first file:",    result[0]["WholeCellMeasuresDict"][0]["TotalSum"])
+        print("Mean diameter in first file:",   result[1]["WholeCellMeasuresDict"][0]["Average"])
+        print("Surface area of 2nd file:",      result[0]["WholeCellMeasuresDict"][1]["TotalSum"])
+        print("Mean diameter in 2nd file:",     result[1]["WholeCellMeasuresDict"][1]["Average"])
 
-    return LMIOFunction('getMeasure', swcFileNames, measureNames, Filter=Filter)
+    '''
+    return LMIOFunction('getMeasure', swcFileNames, measureNames)
+
+
+def getOneMeasure(measure, swcFile):
+    '''
+    Computes one measure statistics of one SWC file
+
+    :param measure: Name of the measure to use. See "Function list" in: http://cng.gmu.edu:8080/Lm/help/index.htm
+    :param swcFile: Path to SWC file
+    :return: A dictionary with measure statistics
+    '''
+    result = getMeasure([measure], [swcFile])
+
+    return result[0]["WholeCellMeasuresDict"][0]
 
 #***********************************************************************************************************************
 

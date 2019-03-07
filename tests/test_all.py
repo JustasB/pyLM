@@ -2,6 +2,7 @@ print("starting...")
 import os; print("Working in: ", os.getcwd());
 
 from pylmeasure import *
+from pylmeasure.util.morphometricMeasurements import getMorphMeasures
 
 swcFiles = ['tests/testFiles/HB130408-1NS_VB.swc']
 
@@ -29,6 +30,10 @@ def test_getMeasure():
     LMOutput = getMeasure(['Surface'], swcFiles)
     assert LMOutput[0]['WholeCellMeasures'][0][4] == 4.24798
 
+
+def test_getOneMeasure():
+    LMOutput = getOneMeasure('Surface', swcFiles[0])
+    assert LMOutput["TotalSum"] == 49599.4
 
 ##*********************************************************************************************************************
 
@@ -66,6 +71,11 @@ def test_getMeasureDependence_with_averaging():
     # plt.show(block=False)
 
 #*********************************************************************************************************************
+
+def test_getMorphMeasures():
+    result = getMorphMeasures(swcFiles[0])
+
+    assert result["scalarMeasurements"]["Width"].magnitude == 174.758
 
 if __name__ == "__main__":
     test_getMeasureDistribution()
