@@ -101,7 +101,14 @@ class LMInput:
                             'Helix'                  :43,
                             'Fractal_Dim'            :44}
 
-    #*******************************************************************************************************************
+
+    def validate_measure_name(self, name):
+        if name is not None:
+            if  name not in self.functionRef:
+                from pprint import pformat as pf
+                raise Exception("Unknown measure: '"+str(name)+"'. Must be one of the following: \n" + pf(self.functionRef.keys(), indent=4))
+
+        return True
 
     def getFunctionString(self):
 
@@ -110,8 +117,13 @@ class LMInput:
         for measureInd, measure1Name in enumerate(self.measure1names):
 
             if self.measure2names is None:
+                self.validate_measure_name(measure1Name)
                 functionString += '-f' + str(self.functionRef[measure1Name]) + ',0,0,' + str(self.nBins) + ' '
+
             else:
+                self.validate_measure_name(measure1Name)
+                self.validate_measure_name(self.measure2names[measureInd])
+
                 measure2 = self.functionRef[self.measure2names[measureInd]]
 
                 functionString += '-f' + str(self.functionRef[measure1Name]) + ',f' + str(measure2) + ',' \
