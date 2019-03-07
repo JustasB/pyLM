@@ -20,11 +20,9 @@ The basic usage is:
 from pylmeasure import *
 
 # Specify the L-Measure to compute, full list: http://cng.gmu.edu:8080/Lm/help/index.htm
-LMOutput = getMeasure(['Surface', 'Diameter'], ["path/to/file.swc"])
+LMOutput = getOneMeasure('Surface', 'path/to/cell.swc')
 
-#                                              V-- measure index           V-- file index
-print("Surface area of first file:",  LMOutput[0]["WholeCellMeasuresDict"][0]["TotalSum"])
-print("Mean diameter in first file:", LMOutput[1]["WholeCellMeasuresDict"][0]["Average"])
+print("Surface area:",  LMOutput["TotalSum"])
 ```
 
 For more examples, see [this Jupyter notebook](https://github.com/JustasB/pylmeasure/blob/master/PyLMeasure%20Usage.ipynb).
