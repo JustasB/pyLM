@@ -52,6 +52,10 @@ def test_getOneMeasureWithSpecificityAND():
     LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Type < 2 and Type < 3")
     assert LMOutput["TotalSum"] == 17.2021
 
+def test_getOneMeasureWithSpecificityInvalidSWCPath():
+    with pytest.raises(Exception):
+        LMOutput = getOneMeasure('Surface', "XYZ")
+
 def test_getOneMeasureWithSpecificityInvalidForm():
     with pytest.raises(Exception):
         LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="XYZ")

@@ -460,12 +460,13 @@ def LMIOFunction(mode, swcFileNames, measure1Names, measure2Names=None, average=
 
     if mode == 'getMeasure':
         lmOutput = getMeasureLMOutput(lmInput)
-    elif mode == 'getDist':
+
+    if mode == 'getDist':
         lmOutput = getMeasureDistLMOutput(lmInput)
-    elif mode == 'getDep':
+
+    if mode == 'getDep':
         lmOutput = getMeasureDepLMOutput(lmInput)
-    else:
-        raise(ValueError('Unknown value for parameter \'mode\''))
+
 
     lmRun = LMRun()
     lmRun.runLM(LMInputFName, LMOutputFName, LMLogFName)
