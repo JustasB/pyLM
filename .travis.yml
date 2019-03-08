@@ -7,7 +7,6 @@ install:
   - pip install -r requirements.txt
   - python setup.py develop
   - pip install jupyter matplotlib
-  - echo "backend: Agg" > ~/.config/matplotlib/matplotlibrc # workaround for matplotlib on travis
 script:
   - py.test --cov=pylmeasure tests/
 after_success:

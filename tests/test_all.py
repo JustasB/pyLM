@@ -7,6 +7,7 @@ swcFiles = ['tests/testFiles/HB130408-1NS_VB.swc']
 def test_documentation():
     import os
     os.system("jupyter nbconvert --to python --output usage.py 'PyLMeasure Usage.ipynb'")
+    os.system("sed -i '1iimport matplotlib; matplotlib.use(\"Agg\");' usage.py") # Disable interactive plots
     import usage # Fail on any notebook errors
 
 ## Usage Example getMeasureDistribution
