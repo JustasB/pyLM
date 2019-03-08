@@ -6,6 +6,7 @@ python:
 install:
   - pip install -r requirements.txt
   - python setup.py develop
+  - pip install jupyter matplotlib
 script:
   - py.test --cov=pylmeasure tests/
 after_success:

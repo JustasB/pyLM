@@ -2,7 +2,7 @@
 [![codecov](https://codecov.io/gh/JustasB/pylmeasure/branch/master/graph/badge.svg)](https://codecov.io/gh/JustasB/pylmeasure)
 [![PyPI version](https://badge.fury.io/py/pylmeasure.svg)](https://badge.fury.io/py/pylmeasure)
 
-# PyLMeasure: A Python Wrapper for L-Measure.
+# PyLMeasure: A Python Wrapper for LMeasure.
 
 [PyLMeasure](https://pypi.org/project/pylmeasure/) is a Python wrapper library for the [command-line interface](http://cng.gmu.edu:8080/Lm/help/cmdLineUsageDoc.html) of the neuronal morphology analysis tool [L-Measure](http://cng.gmu.edu:8080/Lm/help/index.htm).
 

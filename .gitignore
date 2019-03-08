@@ -22,3 +22,7 @@ pylmeasure\.egg-info/
 \.coverage
 
 \.ipynb_checkpoints/
+
+PyLMeasure Usage\.html
+
+usage\.py

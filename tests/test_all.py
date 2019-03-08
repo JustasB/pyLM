@@ -4,6 +4,11 @@ import pytest
 
 swcFiles = ['tests/testFiles/HB130408-1NS_VB.swc']
 
+def test_documentation():
+    import os
+    os.system("jupyter nbconvert --to python --output usage.py 'PyLMeasure Usage.ipynb'")
+    import usage # Fail on any notebook errors
+
 ## Usage Example getMeasureDistribution
 def test_getMeasureDistribution():
     LMOutput = getMeasureDistribution(['Pk_classic'], swcFiles, nBins=50)
@@ -20,6 +25,11 @@ def test_getOneMeasure():
     LMOutput = getOneMeasure('Surface', swcFiles[0])
     assert LMOutput["TotalSum"] == 49599.4
 
+def test_getOneMeasurePCA():
+    LMOutputReg = getOneMeasure('Height', swcFiles[0])
+    LMOutputPCA = getOneMeasure('Height', swcFiles[0],PCA=True)
+
+    assert LMOutputReg["Maximum"] != LMOutputPCA["Maximum"]
 
 def test_getOneMeasureWithSpecificityGT():
     LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Type > 1")
