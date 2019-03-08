@@ -161,9 +161,6 @@ class LMInput:
             self.specificity = conditions_parsed
 
     def get_specificity_string(self):
-        if self.specificity is None:
-            return None
-
         '''
         L-Measure specificity strings look like this:
 
@@ -265,17 +262,14 @@ class LMRun():
             self.LMPath = 'LMLinux' + bit[:2] + '/'
             self.LMExec = 'lmeasure'
 
-        elif osName == 'Darwin':
+        if osName == 'Darwin':
             self.LMPath = 'LMMac'
             self.LMExec = 'lmeasure'
 
-        elif osName == 'Windows':
+        if osName == 'Windows':
             self.LMPath = 'LMwin'
             self.LMExec = 'Lm.exe'
 
-        else:
-            raise(NotImplementedError('Currently, this wrapper only supports Linux, Mac, and Windows. \
-            Sorry for the inconvenience.'))
 
         self.packagePrefix = os.path.split(__file__)[0]
 
@@ -297,8 +291,8 @@ class LMRun():
             try:
                 self.LMOutputFile = open(LMOutputFName, 'r')
                 self.LMOutputFile.close()
-            except:
-                raise(Exception('No Output file created by Lmeasure. Check ' + LMLogFName))
+
+            except: raise(Exception('No Output file created by Lmeasure. Check ' + LMLogFName))
 
     
 
@@ -334,8 +328,7 @@ class BasicLMOutput:
         }
 
     def saveOneLine(self, measureInd, swcFileInd):
-
-        pass
+        return
 
     def readOutput(self, outputFile):
 
@@ -453,7 +446,7 @@ class getMeasureDepLMOutput(BasicLMOutput):
 
 def LMIOFunction(mode, swcFileNames, measure1Names, measure2Names=None, average=False, nBins=10, PCA=False, specificity=None):
 
-    tempDir = 'tmp'
+    tempDir = 'tmp'; 
 
     if not os.path.isdir(tempDir):
         os.mkdir(tempDir)

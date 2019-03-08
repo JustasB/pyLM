@@ -41,21 +41,33 @@ def test_getOneMeasureWithSpecificityAND():
     LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Type < 2 and Type < 3")
     assert LMOutput["TotalSum"] == 17.2021
 
-def test_getOneMeasureWithSpecificityInvalid0():
+def test_getOneMeasureWithSpecificityInvalidEQ():
     with pytest.raises(Exception):
         LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Type = 1")
 
-def test_getOneMeasureWithSpecificityInvalid1():
+def test_getOneMeasureWithSpecificityInvalidGEQ():
     with pytest.raises(Exception):
         LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Type >= 1")
 
-def test_getOneMeasureWithSpecificityInvalid2():
+def test_getOneMeasureWithSpecificityInvalidXYZ():
     with pytest.raises(Exception):
         LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="XYZ == 1")
 
-def test_getOneMeasureWithSpecificityInvalid3():
+def test_getOneMeasureWithSpecificityInvalidFunc():
     with pytest.raises(Exception):
-        LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="xor Type == 1")
+        LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Surface3 == 1")
+
+def test_getOneMeasureWithSpecificityInvalidLogical():
+    with pytest.raises(Exception):
+        LMOutput = getOneMeasure('Surface', swcFiles[0], specificity="Type < 2 xor Type < 3")
+
+def test_getOneMeasureWithSpecificityInvalidValue():
+    with pytest.raises(Exception):
+        LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Diameter == 1.0.1111")
+
+def test_getOneMeasureInvalidFunc():
+    with pytest.raises(Exception):
+        LMOutput = getOneMeasure('Surface321', swcFiles[0])
 
 # Usage Example getMeasureDependence without averaging
 def test_getMeasureDependence_without_averaging():
