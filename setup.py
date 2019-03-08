@@ -5,7 +5,7 @@ with open("Readme.md", "r") as fh:
 
 setuptools.setup(
     name="pylmeasure",
-    version="0.1.6",
+    version="0.1.7",
     author="Ajayrama Kumaraswamy, Justas Birgiolas",
     author_email="justas@asu.edu",
     description="A Python wrapper for L-Measure",

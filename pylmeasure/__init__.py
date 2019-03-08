@@ -31,7 +31,7 @@ def removeFileIfExists(fName):
 def chunks(l, n):
     ''' Split a list into smaller n-sized lists'''
     n = max(1, n)
-    return (l[i:i+n] for i in xrange(0, len(l), n))
+    return (l[i:i+n] for i in range(0, len(l), n))
 
 
 
