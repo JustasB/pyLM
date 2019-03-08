@@ -1,5 +1,6 @@
 from pylmeasure import *
 from pylmeasure.util.morphometricMeasurements import getMorphMeasures
+import pytest
 
 swcFiles = ['tests/testFiles/HB130408-1NS_VB.swc']
 
@@ -18,6 +19,43 @@ def test_getMeasure():
 def test_getOneMeasure():
     LMOutput = getOneMeasure('Surface', swcFiles[0])
     assert LMOutput["TotalSum"] == 49599.4
+
+
+def test_getOneMeasureWithSpecificityGT():
+    LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Type > 1")
+    assert LMOutput["TotalSum"] == 49582.2
+
+def test_getOneMeasureWithSpecificityLT():
+    LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Type < 1")
+    assert LMOutput["TotalSum"] == 0
+
+def test_getOneMeasureWithSpecificityEQ():
+    LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Type == 1")
+    assert LMOutput["TotalSum"] == 17.2021
+
+def test_getOneMeasureWithSpecificityOR():
+    LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Type == 1 or Type == 2")
+    assert LMOutput["TotalSum"] == 17.2021
+
+def test_getOneMeasureWithSpecificityAND():
+    LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Type < 2 and Type < 3")
+    assert LMOutput["TotalSum"] == 17.2021
+
+def test_getOneMeasureWithSpecificityInvalid0():
+    with pytest.raises(Exception):
+        LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Type = 1")
+
+def test_getOneMeasureWithSpecificityInvalid1():
+    with pytest.raises(Exception):
+        LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="Type >= 1")
+
+def test_getOneMeasureWithSpecificityInvalid2():
+    with pytest.raises(Exception):
+        LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="XYZ == 1")
+
+def test_getOneMeasureWithSpecificityInvalid3():
+    with pytest.raises(Exception):
+        LMOutput = getOneMeasure('Surface', swcFiles[0],specificity="xor Type == 1")
 
 # Usage Example getMeasureDependence without averaging
 def test_getMeasureDependence_without_averaging():

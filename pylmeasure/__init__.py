@@ -25,16 +25,19 @@ def str2floatTrap(someStr):
 
 
 def removeFileIfExists(fName):
-
     if os.path.isfile(fName):
         os.remove(fName)
 
+def chunks(l, n):
+    ''' Split a list into smaller n-sized lists'''
+    n = max(1, n)
+    return (l[i:i+n] for i in xrange(0, len(l), n))
 
 
 
 class LMInput:
 
-    def __init__(self, swcFileNames, measure1names, average=False, nBins=10, measure2names=None):
+    def __init__(self, swcFileNames, measure1names, average=False, nBins=10, measure2names=None, PCA=False, specificity=None):
 
         for measure in measure1names:
             assert not measure == 'XYZ', 'Measure \'XYZ\' cannot be used with getMeasure()'
@@ -55,6 +58,9 @@ class LMInput:
         self.numberOfSWCFiles = len(self.swcFileNames)
         self.nBins = nBins
         self.average = average
+        self.PCA = PCA
+        self.specificity = specificity
+
 
         self.functionRef = {'Soma_Surface'           :0,
                             'N_stems'                :1,
@@ -101,6 +107,90 @@ class LMInput:
                             'Helix'                  :43,
                             'Fractal_Dim'            :44}
 
+        self.parse_specificity()
+
+
+    def parse_specificity(self):
+        if self.specificity is not None:
+            from pyparsing import Word, alphanums, nums, ParseException
+
+            # Match patterns like: 'Type > 1 and EucDistance > 100.0'
+            pattern = (Word("andxornt") + Word(alphanums + "_") + Word("<=>") + Word(nums + ".")) * (1, None)
+
+            try:
+                parsed = pattern.parseString("and " + self.specificity) # L-measure requires the first logical to be "AND"
+
+            except ParseException:
+                raise Exception("Could not parse specificity expression: '" + self.specificity +
+                                "'. Examples of allowed expressions: 'Type > 1' or 'Type > 1 and EucDistance > 100.0'")
+
+            # Each condition has exactly 4 elements
+            conditions = chunks(parsed, 4)
+
+            conditions_parsed = []
+
+            # Validated each conditional
+            for cond in conditions:
+
+                # Parse the condition elements
+                logical = cond[0]
+                func = cond[1]
+                comparison = cond[2]
+
+                try:
+                    value = float(cond[3])
+                except:
+                    raise Exception("Specificity: Found: '" + value + "', but expected a number")
+
+                # Validate the condition terms
+                if logical not in ('and', 'or'):
+                    raise Exception("Specificity: Found: '"+logical+"', but expected either 'and' or 'or'")
+
+                if func not in self.functionRef:
+                    raise Exception("Specificity: Found: '"+func+"', but expected one of " + str(self.functionRef.keys()))
+                elif func == "XYZ":
+                    raise Exception("Specificity: Function 'XYZ' is not allowed")
+
+                if comparison not in ("<", "==", ">"):
+                    raise Exception("Specificity: Found: '" + comparison + "', but expected either '<', '>', or '=='")
+
+                # Save the parsed condition
+                conditions_parsed.append({"logical":logical, "func":func, "comparison":comparison, "value":value})
+
+            # Replace the original with the parsed
+            self.specificity = conditions_parsed
+
+    def get_specificity_string(self):
+        if self.specificity is None:
+            return None
+
+        '''
+        L-Measure specificity strings look like this:
+
+            -l1,1,8,1714.0 -l2,1,0,2714.0 -l1,1,1,3714.0  
+
+        Where, each "-l...." is a separate condition
+        The integers represent logical operator, comparison operator, and function in that order
+
+        Logical Operator        or:2, and:1, first always 1/and           
+        Comparison operator:    1: <, 2: =, 3: >                           
+        Function:  		int                                        
+        Value: 			float
+        '''
+
+        # L-measure specificity condition constants
+        logical_map = { "or": "2", "and": "1" }
+        comparison_map = { "<": "1", "==": "2", ">": "3" }
+
+        result = ""
+        for cond in self.specificity:
+            result += ("-l" +
+                       logical_map[cond["logical"]] + "," +
+                       comparison_map[cond["comparison"]] + "," +
+                       str(self.functionRef[cond["func"]]) + "," +
+                       str(cond["value"]) + " ")
+
+        return result
 
     def validate_measure_name(self, name):
         if name is not None:
@@ -139,15 +229,19 @@ class LMInput:
 
         :param inputFName: Name of the input file for L-Measure
         :param outputFileName: Name of the output file of L-Measure
+        :param PCA: Whether to rotate the points along the principal component axes (used for height, width, depth)
         :rtype: None
         """
 
-        outputLine = '-s' + outputFileName
+        outputLine = '-s' + outputFileName + (" -C" if self.PCA else "")
 
         # Create parent folders if they don't exist
         distutils.dir_util.mkpath(os.path.dirname(inputFName))
 
         with open(inputFName, 'w') as LMInputFile:
+            if self.specificity is not None:
+                LMInputFile.write(self.get_specificity_string() + '\n')
+
             LMInputFile.write(self.getFunctionString() + '\n')
             LMInputFile.write(outputLine + '\n')
 
@@ -357,7 +451,7 @@ class getMeasureDepLMOutput(BasicLMOutput):
 
 
 
-def LMIOFunction(mode, swcFileNames, measure1Names, measure2Names=None, average=False, nBins=10, Filter=False):
+def LMIOFunction(mode, swcFileNames, measure1Names, measure2Names=None, average=False, nBins=10, PCA=False, specificity=None):
 
     tempDir = 'tmp'
 
@@ -368,7 +462,7 @@ def LMIOFunction(mode, swcFileNames, measure1Names, measure2Names=None, average=
     LMOutputFName = os.path.join(tempDir, 'LMOutput.txt')
     LMLogFName = os.path.join(tempDir, 'LMLog.txt')
 
-    lmInput = LMInput(swcFileNames, measure1Names, average, nBins, measure2Names)
+    lmInput = LMInput(swcFileNames, measure1Names, average, nBins, measure2Names, PCA, specificity)
     lmInput.writeLMIn(LMInputFName, LMOutputFName)
 
     if mode == 'getMeasure':
@@ -392,12 +486,15 @@ def LMIOFunction(mode, swcFileNames, measure1Names, measure2Names=None, average=
 
 
 
-def getMeasure(measureNames, swcFileNames):
+def getMeasure(measureNames, swcFileNames, PCA=False, specificity=None):
     '''
     Computes a list of measures of a list of SWC files.
 
     :param measureNames: A list of measures. See "Function list" in: http://cng.gmu.edu:8080/Lm/help/index.htm
     :param swcFileNames: A list of paths to SWC files
+    :param PCA: If True, rotates the cell to "stand up right". See: http://cng.gmu.edu:8080/Lm/help/Width.htm
+    :param specificity: An expression of filter conditions. E.g. 'Type > 1 and EucDistance > 100.0'. See:
+    http://cng.gmu.edu:8080/Lm/help/speci.htm
     :return: A list in the form of:
                                                        V-- measure index           V-- file index
         print("Surface area of first file:",    result[0]["WholeCellMeasuresDict"][0]["TotalSum"])
@@ -406,32 +503,48 @@ def getMeasure(measureNames, swcFileNames):
         print("Mean diameter in 2nd file:",     result[1]["WholeCellMeasuresDict"][1]["Average"])
 
     '''
-    return LMIOFunction('getMeasure', swcFileNames, measureNames)
+    return LMIOFunction('getMeasure', swcFileNames, measureNames, PCA=PCA, specificity=specificity)
 
 
-def getOneMeasure(measure, swcFile):
+def getOneMeasure(measure, swcFile, PCA=False, specificity=None):
     '''
     Computes one measure statistics of one SWC file
 
     :param measure: Name of the measure to use. See "Function list" in: http://cng.gmu.edu:8080/Lm/help/index.htm
     :param swcFile: Path to SWC file
+    :param PCA: If True, rotates the cell to "stand up right". See: http://cng.gmu.edu:8080/Lm/help/Width.htm
+    :param specificity: An expression of filter conditions. E.g. 'Type > 1 and EucDistance > 100.0'. See:
     :return: A dictionary with measure statistics
     '''
-    result = getMeasure([measure], [swcFile])
+    result = getMeasure([measure], [swcFile], PCA=PCA, specificity=specificity)
 
     return result[0]["WholeCellMeasuresDict"][0]
 
 
+def getMeasureDistribution(measureNames, swcFileNames, nBins=10, PCA=False, specificity=None):
+    '''
+
+    :param measureNames:
+    :param swcFileNames:
+    :param nBins:
+    :param PCA: If True, rotates the cell to "stand up right". See: http://cng.gmu.edu:8080/Lm/help/Width.htm
+    :param specificity: An expression of filter conditions. E.g. 'Type > 1 and EucDistance > 100.0'. See:
+    :return:
+    '''
+    return LMIOFunction('getDist', swcFileNames, measureNames, measureNames, nBins=nBins, PCA=PCA, specificity=specificity)
 
 
-def getMeasureDistribution(measureNames, swcFileNames, nBins=10, Filter=False):
+def getMeasureDependence(measure1Names, measure2Names, swcFileNames, nBins=10, average=True, PCA=False, specificity=None):
+    '''
 
-    return LMIOFunction('getDist', swcFileNames, measureNames, measureNames, nBins=nBins, Filter=Filter)
-
-
-
-
-def getMeasureDependence(measure1Names, measure2Names, swcFileNames, nBins=10, average=True, Filter=False):
-
-    return LMIOFunction('getDep', swcFileNames, measure1Names, measure2Names, average, nBins, Filter=Filter)
+    :param measure1Names:
+    :param measure2Names:
+    :param swcFileNames:
+    :param nBins:
+    :param average:
+    :param PCA: If True, rotates the cell to "stand up right". See: http://cng.gmu.edu:8080/Lm/help/Width.htm
+    :param specificity: An expression of filter conditions. E.g. 'Type > 1 and EucDistance > 100.0'. See:
+    :return:
+    '''
+    return LMIOFunction('getDep', swcFileNames, measure1Names, measure2Names, average, nBins, PCA=PCA, specificity=specificity)
 
