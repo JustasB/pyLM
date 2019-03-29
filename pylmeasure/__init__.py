@@ -43,13 +43,18 @@ class LMInput:
             assert not measure == 'XYZ', 'Measure \'XYZ\' cannot be used with getMeasure()'
 
         if measure2names is not None:
-
             for measure in measure2names:
                 assert not measure == 'XYZ', 'Measure \'XYZ\' cannot be used with getMeasure()'
 
         for name in swcFileNames:
             if not os.path.exists(name):
                 raise IOError("File cannot be found:" + os.path.join(os.getcwd(),name))
+
+        for name in swcFileNames:
+            if " " in name:
+                raise IOError("L-Measure does not support spaces in file paths:" + os.path.join(os.getcwd(),name))
+
+
 
         self.swcFileNames = swcFileNames
         self.measure1names = measure1names
