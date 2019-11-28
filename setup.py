@@ -1,4 +1,4 @@
-import setuptools
+import setuptools, os, platform
 
 with open("Readme.md", "r") as fh:
     long_description = fh.read()
@@ -20,3 +20,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
 )
+
+if 'Darwin' in platform.system():
+    os.system('chmod +x LMMac/lmeasure')
