@@ -22,4 +22,4 @@ setuptools.setup(
 )
 
 if 'Darwin' in platform.system():
-    os.system('chmod +x LMMac/lmeasure')
+    os.system('chmod +x pylmeasure/LMMac/lmeasure')
