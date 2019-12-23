@@ -20,6 +20,3 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
 )
-
-if 'Darwin' in platform.system():
-    os.system('chmod +x pylmeasure/LMMac/lmeasure')
