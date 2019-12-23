@@ -290,7 +290,12 @@ class LMRun():
         removeFileIfExists(LMLogFName)
 
         with open(LMLogFName, 'w') as LMLogFle:
-            subprocess.call([os.path.join(self.packagePrefix, self.LMPath, self.LMExec), LMInputFName],
+            lm_path = os.path.join(self.packagePrefix, self.LMPath, self.LMExec)
+            
+            if 'Darwin' in platform.system():
+                os.system('chmod +x "%s"' % lm_path)
+            
+            subprocess.call([lm_path, LMInputFName],
                             stdout=LMLogFle, stderr=LMLogFle)
 
             try:
