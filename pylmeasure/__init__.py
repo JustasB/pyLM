@@ -3,6 +3,8 @@ import subprocess
 import platform
 import numpy as np
 import distutils.dir_util, os
+import tempfile
+import time
 
 def str2floatTrap(someStr):
     """
@@ -23,10 +25,18 @@ def str2floatTrap(someStr):
 
 
 
-
-def removeFileIfExists(fName):
+def removeFileIfExists(fName, tries=10, delay=0.2):
     if os.path.isfile(fName):
-        os.remove(fName)
+        i = 0
+        while i < tries:
+            try:
+                os.remove(fName)
+            except:  # Probably a file in use error
+                i += 1
+                time.sleep(delay)
+            else:
+                break
+                
 
 def chunks(l, n):
     ''' Split a list into smaller n-sized lists'''
@@ -456,14 +466,11 @@ class getMeasureDepLMOutput(BasicLMOutput):
 
 def LMIOFunction(mode, swcFileNames, measure1Names, measure2Names=None, average=False, nBins=10, PCA=False, specificity=None):
 
-    tempDir = 'tmp'; 
+    tempDir = tempfile.TemporaryDirectory()
 
-    if not os.path.isdir(tempDir):
-        os.mkdir(tempDir)
-
-    LMInputFName = os.path.join(tempDir, 'LMInput.txt')
-    LMOutputFName = os.path.join(tempDir, 'LMOutput.txt')
-    LMLogFName = os.path.join(tempDir, 'LMLog.txt')
+    LMInputFName = os.path.join(tempDir.name, 'LMInput.txt')
+    LMOutputFName = os.path.join(tempDir.name, 'LMOutput.txt')
+    LMLogFName = os.path.join(tempDir.name, 'LMLog.txt')
 
     lmInput = LMInput(swcFileNames, measure1Names, average, nBins, measure2Names, PCA, specificity)
     lmInput.writeLMIn(LMInputFName, LMOutputFName)
@@ -486,6 +493,8 @@ def LMIOFunction(mode, swcFileNames, measure1Names, measure2Names=None, average=
     with open(LMOutputFName, 'r') as outputFile:
         lmOutput.readOutput(outputFile)
 
+    tempDir.cleanup()
+    
     return lmOutput.LMOutput
 
 
