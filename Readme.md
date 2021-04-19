@@ -19,7 +19,7 @@ The basic usage is:
 ```
 from pylmeasure import *
 
-# Specify the L-Measure to compute, full list: http://cng.gmu.edu:8080/Lm/help/index.htm
+# Specify the L-Measure to compute. Full list: http://cng.gmu.edu:8080/Lm/help/index.htm
 LMOutput = getOneMeasure('Surface', 'path/to/cell.swc')
 
 print("Surface area:",  LMOutput["TotalSum"])
